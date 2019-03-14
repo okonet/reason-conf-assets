@@ -18,11 +18,16 @@
     "gatsby-source-filesystem": "^2.0.24",
     "gatsby-source-graphql": "^2.0.14",
     "gatsby-transformer-sharp": "^2.1.16",
+    "graphql-request": "^1.8.2",
+    "graphql-tag": "^2.10.1",
+    "lodash": "^4.17.11",
     "polished": "^3.0.3",
     "prop-types": "^15.7.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-helmet": "^5.2.0"
+    "react-helmet": "^5.2.0",
+    "subscriptions-transport-ws": "^0.9.16",
+    "urql": "^1.0.4"
   },
   "devDependencies": {
     "prettier": "^1.16.4"
