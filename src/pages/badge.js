@@ -33,13 +33,12 @@ const client = createClient({
 const SecondPage = () => (
   <Provider value={client}>
     <Layout>
-      <SEO title="Page two" />
-      <h1>Assets</h1>
-      <p>Welcome to page 2</p>
+      <SEO title="Badge" />
+      <h1>Badge</h1>
       <Link to="/">Go back to the homepage</Link>
       <StaticQuery
         query={graphql`
-          query BadgeTemplateQuery {
+          {
             data {
               contact(
                 contactName: "Andrey Okonetchnikov"
@@ -61,6 +60,8 @@ const SecondPage = () => (
         `}
         render={data => (
           <>
+              <h1>test</h1>
+
             <Badge
               contact={data.data.contact}
             />

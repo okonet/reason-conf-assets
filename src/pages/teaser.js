@@ -38,7 +38,7 @@ const TeaserPage = () => (
       <Link to="/">Go back to the homepage</Link>
       <StaticQuery
         query={graphql`
-          query SpeakerTweetTemplateQuery {
+          {
             data {
               contact(
                 contactName: "Andrey Okonetchnikov"
