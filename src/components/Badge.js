@@ -1,6 +1,6 @@
 import React from "react"
 import FigmaTextNode from "./FigmaTextNode"
-import FigmaFrame from "./SpeakerTwitterCard"
+import FigmaFrame from "./FigmaFrame"
 
 function Badge({ contact }) {
   const [firstName, lastName] = contact.name.split(' ')
