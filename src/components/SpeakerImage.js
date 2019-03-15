@@ -10,7 +10,7 @@ const NodeWrapper = styled("div")`
 `
 
 const getFigmaNode = gql`
-  query FigmaTextNodeQuery(
+  query FigmaRectangleNodeQuery(
     $fileId: ID!
     $pageName: String!
     $nodeName: String!
@@ -24,8 +24,8 @@ const getFigmaNode = gql`
             x
             y
           }
-          children(type: TEXT, name: $nodeName) {
-            ... on Text {
+          children(type: GROUP, name: $nodeName) {
+            ... on Rectangle {
               name
               position {
                 x
@@ -40,7 +40,6 @@ const getFigmaNode = gql`
                 fontFamily
                 fontWeight
                 letterSpacing
-                lineHeightPx
               }
               fill {
                 r
@@ -88,8 +87,10 @@ export default function FigmaTextNode({
       }}
     >
       {({ fetching, data, error }) => {
-        if (error) {
-          console.error(error)
+        // console.log(data)
+        if (fetching) {
+          return "Loading..."
+        } else if (error) {
           return "Oh no!"
         } else if (!data) {
           return null
@@ -106,11 +107,9 @@ export default function FigmaTextNode({
           <NodeWrapper
             css={{
               ...style,
-              lineHeight: `${style.lineHeightPx}px`,
               left: relativeX,
               top: relativeY,
-              minWidth: size.width,
-              minHeight: size.height,
+              width: size.width,
               color,
             }}
           >

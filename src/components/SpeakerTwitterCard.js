@@ -1,26 +1,18 @@
 import React from "react"
-import styled from "@emotion/styled"
 import FigmaTextNode from "./FigmaTextNode"
+import FigmaImageMask from "./FigmaImageMask"
+import FigmaFrame from "./FigmaFrame"
 
-const Card = styled("div")`
-  position: relative;
-`
-
-function SpeakerTwitterCard({ contact, theme, images }) {
-  const { width, height } = theme.size
-  const [firstName, lastName] = contact.name.split(' ')
+function SpeakerTwitterCard({ contact }) {
   return (
-    <Card css={{ width, height, background: `url(${images[0]})` }}>
-      <FigmaTextNode fileId="HRK5IaLG00uj7oEV2XOg45" pageName="Badge" nodeName="firstName">
-        {firstName}
+    <FigmaFrame fileId="HRK5IaLG00uj7oEV2XOg45" pageName="Speaker Teaser" nodeName="bg">
+      <FigmaTextNode fileId="HRK5IaLG00uj7oEV2XOg45" pageName="Speaker Teaser" nodeName="speakerName">
+        {contact.name}
       </FigmaTextNode>
-      <FigmaTextNode fileId="HRK5IaLG00uj7oEV2XOg45" pageName="Badge" nodeName="lastName">
-        {lastName}
-      </FigmaTextNode>
-      <FigmaTextNode fileId="HRK5IaLG00uj7oEV2XOg45" pageName="Badge" nodeName="companyName">
+      <FigmaTextNode fileId="HRK5IaLG00uj7oEV2XOg45" pageName="Speaker Teaser" nodeName="speakerCompany">
         {contact.company || 'Freelance'}
       </FigmaTextNode>
-    </Card>
+    </FigmaFrame>
   )
 }
 

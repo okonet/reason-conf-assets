@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "@emotion/styled"
 import { rgba } from "polished"
-import {get} from 'lodash'
+import { get } from "lodash"
 import { Query, useSubscription } from "urql"
 import gql from "graphql-tag"
 
@@ -9,43 +9,46 @@ const NodeWrapper = styled("div")`
   position: absolute;
 `
 
-const getFigmaNode = `query FigmaImageQuery($fileId: String!, $pageName: String!, $nodeName: String!) {
-            file(id: $fileId) {
-              pages(name: $pageName) {
-                name
-                frames {
+const getFigmaNode = gql`
+  query FigmaImageMaskQuery(
+    $fileId: ID!
+    $pageName: String!
+    $nodeName: String!
+  ) {
+    file(id: $fileId) {
+      pages(name: $pageName) {
+        name
+        frames {
+          name
+          position {
+            x
+            y
+          }
+          children(type: GROUP) {
+            __typename
+            ... on Frame {
+              children(type: VECTOR) {
+                __typename
+                ... on Vector {
                   name
+                  id
                   position {
                     x
                     y
                   }
-                  elements(type: "TEXT", name: $nodeName) {
-                    name
-                    position {
-                      x
-                      y
-                    }
-                    size {
-                      width
-                      height
-                    }
-                    style {
-                      fontSize
-                      fontFamily
-                      fontWeight
-                      letterSpacing
-                    }
-                    fill {
-                      r
-                      g
-                      b
-                      a
-                    }
+                  size {
+                    width
+                    height
                   }
                 }
               }
             }
-          }`
+          }
+        }
+      }
+    }
+  }
+`
 
 const LastModifiedSubQuery = gql`
   subscription lastModifiedSub {
@@ -53,7 +56,7 @@ const LastModifiedSubQuery = gql`
   }
 `
 
-export default function FigmaTextNode({
+export default function FigmaImageMask({
   fileId,
   pageName,
   nodeName,
@@ -64,25 +67,36 @@ export default function FigmaTextNode({
   }
 
   const [res] = useSubscription(
-    { query: LastModifiedSubQuery, variables: { fileId }},
+    { query: LastModifiedSubQuery, variables: { fileId } },
     handleSubscription
   )
 
-
   return (
-    <Query query={getFigmaNode} variables={{ fileId, pageName, nodeName, lastModified: get(res, 'data.lastModified') }}>
+    <Query
+      query={getFigmaNode}
+      variables={{
+        fileId,
+        pageName,
+        nodeName,
+        lastModified: get(res, "data.lastModified"),
+      }}
+    >
       {({ fetching, data, error }) => {
         // console.log(data)
         if (fetching) {
           return "Loading..."
         } else if (error) {
+          console.error(error)
           return "Oh no!"
         } else if (!data) {
           return null
         }
 
+        console.log(data)
+
+        return <h1>test</h1>
         const theme = data.file.pages[0].frames[0]
-        const { position, style, size, fill } = theme.elements[0]
+        const { position, style, size, fill } = theme.children[0]
         const { r, g, b, a } = fill
         const color = rgba(r * 255, g * 255, b * 255, a)
         const relativeX = position.x - theme.position.x
@@ -105,4 +119,3 @@ export default function FigmaTextNode({
     </Query>
   )
 }
-

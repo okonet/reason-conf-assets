@@ -30,12 +30,11 @@ const client = createClient({
   ],
 });
 
-const SecondPage = () => (
+const TeaserPage = () => (
   <Provider value={client}>
     <Layout>
-      <SEO title="Page two" />
-      <h1>Assets</h1>
-      <p>Welcome to page 2</p>
+      <SEO title="Speaker Teaser" />
+      <h1>Speaker Teaser</h1>
       <Link to="/">Go back to the homepage</Link>
       <StaticQuery
         query={graphql`
@@ -60,12 +59,12 @@ const SecondPage = () => (
             figma {
               image(
                 id: "HRK5IaLG00uj7oEV2XOg45"
-                params: { ids: "1984:0", format: "svg" }
+                params: { ids: ["2007:306", "1923:27"], format: "svg" }
               ) {
                 images
               }
               file(id: "HRK5IaLG00uj7oEV2XOg45") {
-                pages(name: "Badge") {
+                pages(name: "Speaker Teaser") {
                   name
                   frames {
                     size {
@@ -92,4 +91,4 @@ const SecondPage = () => (
   </Provider>
 )
 
-export default SecondPage
+export default TeaserPage
