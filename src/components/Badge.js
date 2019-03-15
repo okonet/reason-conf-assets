@@ -1,16 +1,11 @@
 import React from "react"
-import styled from "@emotion/styled"
 import FigmaTextNode from "./FigmaTextNode"
+import FigmaFrame from "./SpeakerTwitterCard"
 
-const Card = styled("div")`
-  position: relative;
-`
-
-function Badge({ contact, theme, images }) {
-  const { width, height } = theme.size
+function Badge({ contact }) {
   const [firstName, lastName] = contact.name.split(' ')
   return (
-    <Card css={{ width, height, background: `url(${images[0]})` }}>
+    <FigmaFrame fileId="HRK5IaLG00uj7oEV2XOg45" pageName="Badge" nodeName="Export">
       <FigmaTextNode fileId="HRK5IaLG00uj7oEV2XOg45" pageName="Badge" nodeName="firstName">
         {firstName}
       </FigmaTextNode>
@@ -20,7 +15,7 @@ function Badge({ contact, theme, images }) {
       <FigmaTextNode fileId="HRK5IaLG00uj7oEV2XOg45" pageName="Badge" nodeName="companyName">
         {contact.company || 'Freelance'}
       </FigmaTextNode>
-    </Card>
+    </FigmaFrame>
   )
 }
 

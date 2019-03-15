@@ -1,6 +1,5 @@
 import React from "react"
 import FigmaTextNode from "./FigmaTextNode"
-import FigmaImageMask from "./FigmaImageMask"
 import FigmaFrame from "./FigmaFrame"
 
 function SpeakerTwitterCard({ contact }) {
