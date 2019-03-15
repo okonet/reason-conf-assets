@@ -57,33 +57,12 @@ const SecondPage = () => (
                 type
               }
             }
-            figma {
-              image(
-                id: "HRK5IaLG00uj7oEV2XOg45"
-                params: { ids: "1984:0", format: "svg" }
-              ) {
-                images
-              }
-              file(id: "HRK5IaLG00uj7oEV2XOg45") {
-                pages(name: "Badge") {
-                  name
-                  frames {
-                    size {
-                      width
-                      height
-                    }
-                  }
-                }
-              }
-            }
           }
         `}
         render={data => (
           <>
             <Badge
               contact={data.data.contact}
-              theme={data.figma.file.pages[0].frames[0]}
-              images={data.figma.image.images}
             />
           </>
         )}

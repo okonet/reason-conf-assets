@@ -56,33 +56,12 @@ const TeaserPage = () => (
                 type
               }
             }
-            figma {
-              image(
-                id: "HRK5IaLG00uj7oEV2XOg45"
-                params: { ids: ["2007:306", "1923:27"], format: "svg" }
-              ) {
-                images
-              }
-              file(id: "HRK5IaLG00uj7oEV2XOg45") {
-                pages(name: "Speaker Teaser") {
-                  name
-                  frames {
-                    size {
-                      width
-                      height
-                    }
-                  }
-                }
-              }
-            }
           }
         `}
         render={data => (
           <>
             <SpeakerTwitterCard
               contact={data.data.contact}
-              theme={data.figma.file.pages[0].frames[0]}
-              images={data.figma.image.images}
             />
           </>
         )}
