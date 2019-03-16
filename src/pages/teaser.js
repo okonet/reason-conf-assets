@@ -14,8 +14,8 @@ const TeaserPage = () => (
           {
             data {
               contact(
-                contactName: "Andrey Okonetchnikov"
-                conferenceId: "react-finland-2019"
+                contactName: "Jonathan Siebern"
+                conferenceId: "reason-conf-2019"
               ) {
                 name
                 about
