@@ -3,7 +3,7 @@ import styled from "@emotion/styled"
 import { rgba } from "polished"
 import { Query } from "urql"
 import gql from "graphql-tag"
-import GoogleFontLoader from 'react-google-font-loader';
+import GoogleFontLoader from "react-google-font-loader"
 import { LastModifiedContext } from "./layout"
 
 const NodeWrapper = styled("div")`
@@ -28,6 +28,7 @@ const getFigmaNode = gql`
           children(type: TEXT, name: $nodeName) {
             ... on Text {
               name
+              visible
               position {
                 x
                 y
@@ -93,23 +94,26 @@ export default function FigmaTextNode({
 
             return (
               <>
-              <GoogleFontLoader fonts={[{
-                font: fontFamily,
-                weights: [fontWeight]
-              }]} />
-              <NodeWrapper
-                css={{
-                  ...style,
-                  lineHeight: `${style.lineHeightPx}px`,
-                  left: relativeX,
-                  top: relativeY,
-                  minWidth: size.width,
-                  minHeight: size.height,
-                  color,
-                }}
-              >
-                {children}
-              </NodeWrapper>
+                <GoogleFontLoader
+                  fonts={[
+                    {
+                      font: fontFamily,
+                      weights: [fontWeight],
+                    },
+                  ]}
+                />
+                <NodeWrapper
+                  css={{
+                    ...style,
+                    ...size,
+                    lineHeight: `${style.lineHeightPx}px`,
+                    left: relativeX,
+                    top: relativeY,
+                    color,
+                  }}
+                >
+                  {children}
+                </NodeWrapper>
               </>
             )
           }}
