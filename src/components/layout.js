@@ -7,7 +7,9 @@
 
 import React from "react"
 import PropTypes from "prop-types"
-import { StaticQuery, graphql } from "gatsby"
+import { graphql, StaticQuery } from "gatsby"
+import { cacheExchange, createClient, debugExchange, fetchExchange, Provider, subscriptionExchange } from "urql"
+import { SubscriptionClient } from "subscriptions-transport-ws"
 
 import Header from "./header"
 import "./layout.css"
@@ -24,7 +26,7 @@ const Layout = ({ children }) => (
       }
     `}
     render={data => (
-      <>
+      <Provider value={client}>
         <Header siteTitle={data.site.siteMetadata.title} />
         <div
           style={{
@@ -41,7 +43,7 @@ const Layout = ({ children }) => (
             <a href="https://www.gatsbyjs.org">Gatsby</a>
           </footer>
         </div>
-      </>
+      </Provider>
     )}
   />
 )
@@ -51,3 +53,20 @@ Layout.propTypes = {
 }
 
 export default Layout
+
+export const subscriptionClient = new SubscriptionClient(
+  "ws://localhost:3001/graphql",
+  {},
+)
+
+export const client = createClient({
+  url: "http://localhost:3001/graphql",
+  exchanges: [
+    debugExchange,
+    cacheExchange,
+    fetchExchange,
+    subscriptionExchange({
+      forwardSubscription: operation => subscriptionClient.request(operation),
+    }),
+  ],
+})
