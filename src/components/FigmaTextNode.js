@@ -85,12 +85,16 @@ export default function FigmaTextNode({
             }
 
             const theme = data.file.pages[0].frames[0]
-            const { position, style, size, fill } = theme.children[0]
+            const { position, style, size, fill, visible } = theme.children[0]
             const { r, g, b, a } = fill
             const color = rgba(r * 255, g * 255, b * 255, a)
             const relativeX = position.x - theme.position.x
             const relativeY = position.y - theme.position.y
             const { fontFamily, fontWeight } = style
+
+            if (!visible) {
+              return null
+            }
 
             return (
               <>
