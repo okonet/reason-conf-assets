@@ -3,6 +3,7 @@ import styled from "@emotion/styled"
 import { rgba } from "polished"
 import { Query } from "urql"
 import gql from "graphql-tag"
+import GoogleFontLoader from 'react-google-font-loader';
 import { LastModifiedContext } from "./layout"
 
 const NodeWrapper = styled("div")`
@@ -88,8 +89,14 @@ export default function FigmaTextNode({
             const color = rgba(r * 255, g * 255, b * 255, a)
             const relativeX = position.x - theme.position.x
             const relativeY = position.y - theme.position.y
+            const { fontFamily, fontWeight } = style
 
             return (
+              <>
+              <GoogleFontLoader fonts={[{
+                font: fontFamily,
+                weights: [fontWeight]
+              }]} />
               <NodeWrapper
                 css={{
                   ...style,
@@ -103,6 +110,7 @@ export default function FigmaTextNode({
               >
                 {children}
               </NodeWrapper>
+              </>
             )
           }}
         </Query>

@@ -25,6 +25,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-google-font-loader": "^1.0.5",
     "react-helmet": "^5.2.0",
     "subscriptions-transport-ws": "^0.9.16",
     "urql": "^1.0.4"
