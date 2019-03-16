@@ -5,7 +5,6 @@ import SpeakerImage from "./SpeakerImage"
 import FigmaGroup from "./FigmaGroup"
 
 function SpeakerTwitterCard({ contact }) {
-  console.log(contact)
   return (
     <FigmaFrame
       fileId="HRK5IaLG00uj7oEV2XOg45"
@@ -33,6 +32,15 @@ function SpeakerTwitterCard({ contact }) {
       >
         {contact.company || "Freelance"}
       </FigmaTextNode>
+      {contact.talks && (
+        <FigmaTextNode
+          fileId="HRK5IaLG00uj7oEV2XOg45"
+          pageName="Speaker Teaser"
+          nodeName="talkTitle"
+        >
+          {contact.talks[0].title}
+        </FigmaTextNode>
+      )}
     </FigmaFrame>
   )
 }
