@@ -1,122 +1,27 @@
 import React from "react"
 import styled from "@emotion/styled"
-import { rgba } from "polished"
-import { get } from "lodash"
-import { Query, useSubscription } from "urql"
-import gql from "graphql-tag"
 
-const NodeWrapper = styled("div")`
-  position: absolute;
-`
-
-const getFigmaNode = gql`
-  query FigmaRectangleNodeQuery(
-    $fileId: ID!
-    $pageName: String!
-    $nodeName: String!
-  ) {
-    file(id: $fileId) {
-      pages(name: $pageName) {
-        name
-        frames {
-          name
-          position {
-            x
-            y
-          }
-          children(type: GROUP, name: $nodeName) {
-            ... on Rectangle {
-              name
-              position {
-                x
-                y
-              }
-              size {
-                width
-                height
-              }
-              style {
-                fontSize
-                fontFamily
-                fontWeight
-                letterSpacing
-              }
-              fill {
-                r
-                g
-                b
-                a
-              }
-            }
-          }
-        }
-      }
-    }
+const Picture = styled('picture')`
+  position: relative;
+  display: block;
+  width: 100%;
+  filter: drop-shadow(20px 20px 0px rgba(0,0,0,0.25));
+  
+  img {
+    display: block;
+    margin: 0;
+    padding: 0;
+    clip-path: polygon(0 15px, 100% 0, 100% calc(100% - 15px), 0 100%);
+    filter: grayscale(100%);
   }
 `
 
-const LastModifiedSubQuery = gql`
-  subscription lastModifiedSub {
-    lastModified
-  }
-`
-
-export default function FigmaTextNode({
-  fileId,
-  pageName,
-  nodeName,
-  children,
-}) {
-  const handleSubscription = (messages = [], response) => {
-    return response
-  }
-
-  const [res] = useSubscription(
-    { query: LastModifiedSubQuery, variables: { fileId } },
-    handleSubscription
-  )
-
+function SpeakerImage({ speaker }) {
   return (
-    <Query
-      query={getFigmaNode}
-      variables={{
-        fileId,
-        pageName,
-        nodeName,
-        lastModified: get(res, "data.lastModified"),
-      }}
-    >
-      {({ fetching, data, error }) => {
-        // console.log(data)
-        if (fetching) {
-          return "Loading..."
-        } else if (error) {
-          return "Oh no!"
-        } else if (!data) {
-          return null
-        }
-
-        const theme = data.file.pages[0].frames[0]
-        const { position, style, size, fill } = theme.children[0]
-        const { r, g, b, a } = fill
-        const color = rgba(r * 255, g * 255, b * 255, a)
-        const relativeX = position.x - theme.position.x
-        const relativeY = position.y - theme.position.y
-
-        return (
-          <NodeWrapper
-            css={{
-              ...style,
-              left: relativeX,
-              top: relativeY,
-              width: size.width,
-              color,
-            }}
-          >
-            {children}
-          </NodeWrapper>
-        )
-      }}
-    </Query>
+    <Picture>
+      <img src={speaker.image.url} alt={speaker.name} />
+    </Picture>
   )
 }
+
+export default SpeakerImage

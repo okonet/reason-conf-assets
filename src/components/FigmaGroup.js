@@ -1,16 +1,15 @@
 import React from "react"
 import styled from "@emotion/styled"
-import { rgba } from "polished"
 import { Query } from "urql"
 import gql from "graphql-tag"
 import { LastModifiedContext } from "./layout"
 
 const NodeWrapper = styled("div")`
-  position: absolute;
+  position: relative;
 `
 
 const getFigmaNode = gql`
-  query FigmaTextNodeQuery(
+  query FigmaFrameNodeQuery(
     $fileId: ID!
     $pageName: String!
     $nodeName: String!
@@ -24,9 +23,13 @@ const getFigmaNode = gql`
             x
             y
           }
-          children(type: TEXT, name: $nodeName) {
-            ... on Text {
-              name
+          size {
+            width
+            height
+          }
+          children(name: $nodeName) {
+            ... on Frame {
+              id
               position {
                 x
                 y
@@ -34,19 +37,6 @@ const getFigmaNode = gql`
               size {
                 width
                 height
-              }
-              style {
-                fontSize
-                fontFamily
-                fontWeight
-                letterSpacing
-                lineHeightPx
-              }
-              fill {
-                r
-                g
-                b
-                a
               }
             }
           }
@@ -56,12 +46,7 @@ const getFigmaNode = gql`
   }
 `
 
-export default function FigmaTextNode({
-  fileId,
-  pageName,
-  nodeName,
-  children,
-}) {
+export default function FigmaGroup({ fileId, pageName, nodeName, children }) {
   return (
     <LastModifiedContext.Consumer>
       {lastModified => (
@@ -82,23 +67,15 @@ export default function FigmaTextNode({
               return null
             }
 
-            const theme = data.file.pages[0].frames[0]
-            const { position, style, size, fill } = theme.children[0]
-            const { r, g, b, a } = fill
-            const color = rgba(r * 255, g * 255, b * 255, a)
-            const relativeX = position.x - theme.position.x
-            const relativeY = position.y - theme.position.y
+            const frame = data.file.pages[0].frames[0]
+            const { size, position } = frame.children[0]
 
             return (
               <NodeWrapper
                 css={{
-                  ...style,
-                  lineHeight: `${style.lineHeightPx}px`,
-                  left: relativeX,
-                  top: relativeY,
-                  minWidth: size.width,
-                  minHeight: size.height,
-                  color,
+                  ...size,
+                  top: position.y,
+                  left: position.x,
                 }}
               >
                 {children}

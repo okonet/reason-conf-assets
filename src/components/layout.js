@@ -8,58 +8,37 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { graphql, StaticQuery } from "gatsby"
-import { cacheExchange, createClient, debugExchange, fetchExchange, Provider, subscriptionExchange } from "urql"
+import {
+  cacheExchange,
+  createClient,
+  debugExchange,
+  fetchExchange,
+  Provider,
+  Subscription,
+  subscriptionExchange,
+  useSubscription,
+} from "urql"
 import { SubscriptionClient } from "subscriptions-transport-ws"
+import { get } from "lodash"
 
 import Header from "./header"
 import "./layout.css"
+import gql from "graphql-tag"
 
-const Layout = ({ children }) => (
-  <StaticQuery
-    query={graphql`
-      query SiteTitleQuery {
-        site {
-          siteMetadata {
-            title
-          }
-        }
-      }
-    `}
-    render={data => (
-      <Provider value={client}>
-        <Header siteTitle={data.site.siteMetadata.title} />
-        <div
-          style={{
-            margin: `0 auto`,
-            maxWidth: 960,
-            padding: `0px 1.0875rem 1.45rem`,
-            paddingTop: 0,
-          }}
-        >
-          <main>{children}</main>
-          <footer>
-            © {new Date().getFullYear()}, Built with
-            {` `}
-            <a href="https://www.gatsbyjs.org">Gatsby</a>
-          </footer>
-        </div>
-      </Provider>
-    )}
-  />
-)
+const LastModifiedSubQuery = gql`
+  subscription lastModifiedSub {
+    lastModified
+  }
+`
 
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-}
+export const LastModifiedContext = React.createContext("")
 
-export default Layout
-
-export const subscriptionClient = new SubscriptionClient(
+const subscriptionClient = new SubscriptionClient(
   "ws://localhost:3001/graphql",
-  {},
+  {}
 )
 
-export const client = createClient({
+const client = createClient({
   url: "http://localhost:3001/graphql",
   exchanges: [
     debugExchange,
@@ -70,3 +49,53 @@ export const client = createClient({
     }),
   ],
 })
+
+const Layout = ({ children }) => {
+  return (
+    <StaticQuery
+      query={graphql`
+        query SiteTitleQuery {
+          site {
+            siteMetadata {
+              title
+            }
+          }
+        }
+      `}
+      render={data => (
+        <Provider value={client}>
+          <Subscription query={LastModifiedSubQuery}>
+            {res => (
+              <LastModifiedContext.Provider
+                value={get(res, "data.lastModified")}
+              >
+                <Header siteTitle={data.site.siteMetadata.title} />
+                <div
+                  style={{
+                    margin: `0 auto`,
+                    maxWidth: 960,
+                    padding: `0px 1.0875rem 1.45rem`,
+                    paddingTop: 0,
+                  }}
+                >
+                  <main>{children}</main>
+                  <footer>
+                    © {new Date().getFullYear()}, Built with
+                    {` `}
+                    <a href="https://www.gatsbyjs.org">Gatsby</a>
+                  </footer>
+                </div>
+              </LastModifiedContext.Provider>
+            )}
+          </Subscription>
+        </Provider>
+      )}
+    />
+  )
+}
+
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+}
+
+export default Layout
