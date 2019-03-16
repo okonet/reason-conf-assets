@@ -39,21 +39,6 @@ module.exports = {
         url: "http://localhost:3000/graphql",
       },
     },
-    {
-      resolve: "gatsby-source-graphql",
-      options: {
-        typeName: "Figma",
-
-        fieldName: "figma",
-
-        url: "http://localhost:3001/graphql",
-
-        headers: {
-
-          'X-Figma-Token': `bearer ${process.env.GITHUB_TOKEN}`,
-        }
-      },
-    },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // 'gatsby-plugin-offline',
