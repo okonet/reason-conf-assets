@@ -32,13 +32,9 @@ const SecondPage = () => (
           }
         `}
         render={data => (
-          <>
-              <h1>test</h1>
-
             <Badge
               contact={data.data.contact}
             />
-          </>
         )}
       />
     </Layout>
