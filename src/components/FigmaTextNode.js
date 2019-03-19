@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "@emotion/styled"
+import styled from "styled-components"
 import { rgba } from "polished"
 import { Query } from "urql"
 import gql from "graphql-tag"

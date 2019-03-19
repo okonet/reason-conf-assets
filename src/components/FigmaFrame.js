@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "@emotion/styled"
+import styled from "styled-components"
 import { Query } from "urql"
 import gql from "graphql-tag"
 import { LastModifiedContext } from "./layout"
@@ -64,7 +64,7 @@ export default function FigmaFrame({ fileId, pageName, nodeName, children }) {
             fileId,
             pageName,
             nodeName,
-            lastModified
+            lastModified,
           }}
         >
           {({ fetching, data, error }) => {
@@ -90,7 +90,7 @@ export default function FigmaFrame({ fileId, pageName, nodeName, children }) {
                   variables={{
                     fileId,
                     nodeIds: id,
-                    lastModified
+                    lastModified,
                   }}
                 >
                   {({ fetching, data, error }) => {

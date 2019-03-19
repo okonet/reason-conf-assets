@@ -1,12 +1,12 @@
 import React from "react"
-import styled from "@emotion/styled"
+import styled from "styled-components"
 
-const Picture = styled('picture')`
+const Picture = styled("picture")`
   position: relative;
   display: block;
   width: 100%;
-  filter: drop-shadow(15px 15px 0px rgba(0,0,0,0.25));
-  
+  filter: drop-shadow(15px 15px 0px rgba(0, 0, 0, 0.25));
+
   img {
     display: block;
     margin: 0;
