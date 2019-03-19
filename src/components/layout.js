@@ -8,45 +8,41 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { graphql, StaticQuery } from "gatsby"
-import {
-  cacheExchange,
-  createClient,
-  debugExchange,
-  fetchExchange,
-  Provider,
-  Subscription,
-  subscriptionExchange,
-} from "urql"
-import { SubscriptionClient } from "subscriptions-transport-ws"
-import { get } from "lodash"
-
+import { split } from "apollo-link"
+import ApolloClient from "apollo-client"
+import { ApolloProvider } from "react-apollo"
+import { BatchHttpLink } from "apollo-link-batch-http"
+import { InMemoryCache } from "apollo-cache-inmemory"
+import { WebSocketLink } from "apollo-link-ws"
+import { getMainDefinition } from "apollo-utilities"
 import Header from "./header"
 import "./layout.css"
-import gql from "graphql-tag"
-
-const LastModifiedSubQuery = gql`
-  subscription lastModifiedSub {
-    lastModified
-  }
-`
 
 export const LastModifiedContext = React.createContext("")
 
-const subscriptionClient = new SubscriptionClient(
-  "ws://localhost:3001/graphql",
-  {}
+const httpLink = new BatchHttpLink({
+  uri: "http://localhost:3001/graphql",
+})
+
+const wsLink = new WebSocketLink({
+  uri: "ws://localhost:3001/graphql",
+  options: {
+    reconnect: true,
+  },
+})
+
+const link = split(
+  ({ query }) => {
+    const { kind, operation } = getMainDefinition(query)
+    return kind === "OperationDefinition" && operation === "subscription"
+  },
+  wsLink,
+  httpLink
 )
 
-const client = createClient({
-  url: "http://localhost:3001/graphql",
-  exchanges: [
-    debugExchange,
-    cacheExchange,
-    fetchExchange,
-    subscriptionExchange({
-      forwardSubscription: operation => subscriptionClient.request(operation),
-    }),
-  ],
+const client = new ApolloClient({
+  link,
+  cache: new InMemoryCache(),
 })
 
 const Layout = ({ children }) => {
@@ -61,33 +57,25 @@ const Layout = ({ children }) => {
           }
         }
       `}
-      render={data => (
-        <Provider value={client}>
-          <Subscription query={LastModifiedSubQuery}>
-            {res => (
-              <LastModifiedContext.Provider
-                value={get(res, "data.lastModified")}
-              >
-                <Header siteTitle={data.site.siteMetadata.title} />
-                <div
-                  style={{
-                    margin: `0 auto`,
-                    maxWidth: 960,
-                    padding: `0px 1.0875rem 1.45rem`,
-                    paddingTop: 0,
-                  }}
-                >
-                  <main>{children}</main>
-                  <footer>
-                    © {new Date().getFullYear()}, Built with
-                    {` `}
-                    <a href="https://www.gatsbyjs.org">Gatsby</a>
-                  </footer>
-                </div>
-              </LastModifiedContext.Provider>
-            )}
-          </Subscription>
-        </Provider>
+      render={({ site }) => (
+        <ApolloProvider client={client}>
+          <Header siteTitle={site.siteMetadata.title} />
+          <div
+            style={{
+              margin: `0 auto`,
+              maxWidth: 960,
+              padding: `0px 1.0875rem 1.45rem`,
+              paddingTop: 0,
+            }}
+          >
+            <main>{children}</main>
+            <footer>
+              © {new Date().getFullYear()}, Built with
+              {` `}
+              <a href="https://www.gatsbyjs.org">Gatsby</a>
+            </footer>
+          </div>
+        </ApolloProvider>
       )}
     />
   )
