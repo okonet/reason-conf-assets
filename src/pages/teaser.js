@@ -5,20 +5,18 @@ import SEO from "../components/seo"
 import SpeakerTwitterCard from "../components/SpeakerTwitterCard"
 
 const TeaserPage = () => (
-    <Layout>
-      <SEO title="Speaker Teaser" />
-      <h1>Speaker Teaser</h1>
-      <Link to="/">Go back to the homepage</Link>
-      <StaticQuery
-        query={graphql`
-          {
-            data {
-              contact(
-                contactName: "Jonathan Siebern"
-                conferenceId: "reason-conf-2019"
-              ) {
+  <Layout>
+    <SEO title="Speaker Teaser" />
+    <h1>Speaker Teaser</h1>
+    <Link to="/">Go back to the homepage</Link>
+    <StaticQuery
+      query={graphql`
+        {
+          data {
+            conference(id: "reason-conf-2019") {
+              id
+              speakers {
                 name
-                about
                 company
                 image {
                   url
@@ -26,20 +24,20 @@ const TeaserPage = () => (
                 talks {
                   title
                 }
-                type
               }
             }
           }
-        `}
-        render={data => (
-          <>
-            <SpeakerTwitterCard
-              contact={data.data.contact}
-            />
-          </>
-        )}
-      />
-    </Layout>
+        }
+      `}
+      render={data => (
+        <>
+          {data.data.conference.speakers.map(speaker => (
+            <SpeakerTwitterCard contact={speaker} />
+          ))}
+        </>
+      )}
+    />
+  </Layout>
 )
 
 export default TeaserPage
