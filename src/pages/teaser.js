@@ -1,5 +1,6 @@
 import React from "react"
 import { graphql, Link, StaticQuery } from "gatsby"
+import Stack from "stack-styled"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import SpeakerTwitterCard from "../components/SpeakerTwitterCard"
@@ -30,11 +31,11 @@ const TeaserPage = () => (
         }
       `}
       render={data => (
-        <>
+        <Stack gap={4}>
           {data.data.conference.speakers.map(speaker => (
             <SpeakerTwitterCard contact={speaker} />
           ))}
-        </>
+        </Stack>
       )}
     />
   </Layout>
