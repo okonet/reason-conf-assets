@@ -16,7 +16,6 @@ import {
   Provider,
   Subscription,
   subscriptionExchange,
-  useSubscription,
 } from "urql"
 import { SubscriptionClient } from "subscriptions-transport-ws"
 import { get } from "lodash"
