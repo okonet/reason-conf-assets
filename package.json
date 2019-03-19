@@ -1,9 +1,9 @@
 {
-  "name": "gatsby-starter-default",
+  "name": "reason-conf-assets",
   "private": true,
-  "description": "A simple starter to get up and developing quickly with Gatsby",
+  "description": "Reason Conf Print Assets Generator",
   "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "author": "Andrey Okonetchnikov <andrey@okonet.ru>",
   "dependencies": {
     "gatsby": "^2.1.30",
     "gatsby-image": "^2.0.32",
@@ -49,10 +49,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+    "url": "https://github.com/okonet/reason-conf-assets"
   },
   "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "url": "https://github.com/okonet/reason-conf-assets/issues"
   },
   "husky": {
     "hooks": {
