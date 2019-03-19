@@ -1,10 +1,10 @@
 import React from "react"
 import styled from "styled-components"
 import { rgba } from "polished"
-import { Query } from "urql"
 import gql from "graphql-tag"
 import GoogleFontLoader from "react-google-font-loader"
 import { LastModifiedContext } from "./layout"
+import FigmaQuery from "./FigmaQuery"
 
 const NodeWrapper = styled("div")`
   position: absolute;
@@ -67,7 +67,7 @@ export default function FigmaTextNode({
   return (
     <LastModifiedContext.Consumer>
       {lastModified => (
-        <Query
+        <FigmaQuery
           query={getFigmaNode}
           variables={{
             fileId,
@@ -76,14 +76,7 @@ export default function FigmaTextNode({
             lastModified,
           }}
         >
-          {({ fetching, data, error }) => {
-            if (error) {
-              console.error(error)
-              return "Oh no!"
-            } else if (!data) {
-              return null
-            }
-
+          {({ data }) => {
             const theme = data.file.pages[0].frames[0]
             const { position, style, size, fill, visible } = theme.children[0]
             const { r, g, b, a } = fill
@@ -121,7 +114,7 @@ export default function FigmaTextNode({
               </>
             )
           }}
-        </Query>
+        </FigmaQuery>
       )}
     </LastModifiedContext.Consumer>
   )

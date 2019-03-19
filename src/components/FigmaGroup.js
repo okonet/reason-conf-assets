@@ -1,8 +1,8 @@
 import React from "react"
 import styled from "styled-components"
-import { Query } from "urql"
 import gql from "graphql-tag"
 import { LastModifiedContext } from "./layout"
+import FigmaQuery from "./FigmaQuery"
 
 const NodeWrapper = styled("div")`
   position: relative;
@@ -18,39 +18,25 @@ const getFigmaNode = gql`
       pages(name: $pageName) {
         name
         frames {
-          name
-          position {
-            x
-            y
-          }
-          size {
-            width
-            height
-          }
+          ...Rect
           children(name: $nodeName) {
             ... on Frame {
               id
-              position {
-                x
-                y
-              }
-              size {
-                width
-                height
-              }
+              ...Rect
             }
           }
         }
       }
     }
   }
+  ${rectFragment}
 `
 
 export default function FigmaGroup({ fileId, pageName, nodeName, children }) {
   return (
     <LastModifiedContext.Consumer>
       {lastModified => (
-        <Query
+        <FigmaQuery
           query={getFigmaNode}
           variables={{
             fileId,
@@ -59,14 +45,7 @@ export default function FigmaGroup({ fileId, pageName, nodeName, children }) {
             lastModified,
           }}
         >
-          {({ fetching, data, error }) => {
-            if (error) {
-              console.error(error)
-              return "Oh no!"
-            } else if (!data) {
-              return null
-            }
-
+          {({ data }) => {
             const frame = data.file.pages[0].frames[0]
             const { size, position } = frame.children[0]
 
@@ -82,7 +61,7 @@ export default function FigmaGroup({ fileId, pageName, nodeName, children }) {
               </NodeWrapper>
             )
           }}
-        </Query>
+        </FigmaQuery>
       )}
     </LastModifiedContext.Consumer>
   )

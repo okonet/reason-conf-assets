@@ -1,8 +1,8 @@
 import React from "react"
 import styled from "styled-components"
-import { Query } from "urql"
 import gql from "graphql-tag"
 import { LastModifiedContext } from "./layout"
+import FigmaQuery from "./FigmaQuery"
 
 const NodeWrapper = styled("div")`
   position: relative;
@@ -58,7 +58,7 @@ export default function FigmaFrame({ fileId, pageName, nodeName, children }) {
   return (
     <LastModifiedContext.Consumer>
       {lastModified => (
-        <Query
+        <FigmaQuery
           query={getFigmaNode}
           variables={{
             fileId,
@@ -67,14 +67,7 @@ export default function FigmaFrame({ fileId, pageName, nodeName, children }) {
             lastModified,
           }}
         >
-          {({ fetching, data, error }) => {
-            if (error) {
-              console.error(error)
-              return "Oh no!"
-            } else if (!data) {
-              return null
-            }
-
+          {({ data }) => {
             const frame = data.file.pages[0].frames[0]
             const { size } = frame
             const { id } = frame.children[0]
@@ -85,7 +78,7 @@ export default function FigmaFrame({ fileId, pageName, nodeName, children }) {
                   ...size,
                 }}
               >
-                <Query
+                <FigmaQuery
                   query={getImagesOfNode}
                   variables={{
                     fileId,
@@ -93,14 +86,7 @@ export default function FigmaFrame({ fileId, pageName, nodeName, children }) {
                     lastModified,
                   }}
                 >
-                  {({ fetching, data, error }) => {
-                    if (error) {
-                      console.error(error)
-                      return "Oh no!"
-                    } else if (!data) {
-                      return null
-                    }
-
+                  {({ data }) => {
                     return (
                       <NodeWrapper
                         css={{
@@ -112,11 +98,11 @@ export default function FigmaFrame({ fileId, pageName, nodeName, children }) {
                       </NodeWrapper>
                     )
                   }}
-                </Query>
+                </FigmaQuery>
               </NodeWrapper>
             )
           }}
-        </Query>
+        </FigmaQuery>
       )}
     </LastModifiedContext.Consumer>
   )
