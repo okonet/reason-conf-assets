@@ -78,6 +78,12 @@ export default function FigmaTextNode({
         >
           {({ data }) => {
             const theme = data.file.pages[0].frames[0]
+            if (!theme.children.length) {
+              console.warn(
+                `No children returned from the query. Check if Figma file has a corresponding layer with name ${nodeName}`
+              )
+              return null
+            }
             const { position, style, size, fill, visible } = theme.children[0]
             const { r, g, b, a } = fill
             const color = rgba(r * 255, g * 255, b * 255, a)
