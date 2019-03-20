@@ -3,74 +3,10 @@ import styled from "styled-components"
 import gql from "graphql-tag"
 import { LastModifiedContext } from "./layout"
 import FigmaQuery from "./FigmaQuery"
+import { FIGMA_FILE_QUERY } from "./FigmaFile"
 
 const NodeWrapper = styled("div")`
   position: relative;
-`
-export const rectFragment = gql`
-  fragment Rect on Node {
-    position {
-      x
-      y
-    }
-    size {
-      width
-      height
-    }
-  }
-`
-
-export const childrenFragment = gql`
-  fragment ChildrenOfName on Frame {
-    children(name: $nodeName) {
-      ... on Frame {
-        id
-        ...Rect
-      }
-      ... on Text {
-        name
-        visible
-        style {
-          fontSize
-          fontFamily
-          fontWeight
-          letterSpacing
-          lineHeightPx
-        }
-        fill {
-          r
-          g
-          b
-          a
-        }
-        ...Rect
-      }
-    }
-  }
-
-  ${rectFragment}
-`
-
-const getFigmaNode = gql`
-  query FigmaFrameNodeQuery(
-    $fileId: ID!
-    $pageName: String!
-    $nodeName: String!
-  ) {
-    file(id: $fileId) {
-      pages(name: $pageName) {
-        name
-        frames {
-          name
-          ...Rect
-          ...ChildrenOfName
-        }
-      }
-    }
-  }
-
-  ${childrenFragment}
-  ${rectFragment}
 `
 
 const getImagesOfNode = gql`
@@ -86,7 +22,7 @@ export default function FigmaFrame({ fileId, pageName, nodeName, children }) {
     <LastModifiedContext.Consumer>
       {lastModified => (
         <FigmaQuery
-          query={getFigmaNode}
+          query={FIGMA_FILE_QUERY}
           variables={{
             fileId,
             pageName,

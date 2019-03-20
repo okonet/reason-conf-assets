@@ -2,27 +2,97 @@ import React from "react"
 import { Query } from "react-apollo"
 import gql from "graphql-tag"
 
-const FIGMA_FILE_QUERY = gql`
-  query figmaFileQuery($fileId: ID!) {
-    file(id: $fileId) {
-      version
-      lastModified
+export const rectFragment = gql`
+  fragment Rect on Node {
+    position {
+      x
+      y
+    }
+    size {
+      width
+      height
     }
   }
+`
+
+export const childrenFragment = gql`
+  fragment ChildrenOfName on Frame {
+    children(name: $nodeName) {
+      ... on Frame {
+        id
+        ...Rect
+      }
+      ... on Text {
+        id
+        name
+        visible
+        style {
+          fontSize
+          fontFamily
+          fontWeight
+          letterSpacing
+          lineHeightPx
+        }
+        fill {
+          r
+          g
+          b
+          a
+        }
+        ...Rect
+      }
+    }
+  }
+
+  ${rectFragment}
+`
+
+export const FIGMA_FILE_QUERY = gql`
+  query FigmaFileQuery($fileId: ID!, $pageName: String!, $nodeName: String!) {
+    file(id: $fileId) {
+      pages(name: $pageName) {
+        name
+        frames {
+          name
+          ...Rect
+          ...ChildrenOfName
+        }
+      }
+    }
+  }
+
+  ${childrenFragment}
+  ${rectFragment}
 `
 
 const FIGMA_FILE_SUBSCRIPTION = gql`
-  subscription onFigmaFileUpdated($fileId: ID!) {
+  subscription onFigmaFileUpdated(
+    $fileId: ID!
+    $pageName: String!
+    $nodeName: String!
+  ) {
     file(id: $fileId) {
-      version
-      lastModified
+      pages(name: $pageName) {
+        name
+        frames {
+          name
+          ...Rect
+          ...ChildrenOfName
+        }
+      }
     }
   }
+
+  ${childrenFragment}
+  ${rectFragment}
 `
 
-function FigmaFile({ fileId, children }) {
+function FigmaFile({ fileId, pageName, children }) {
   return (
-    <Query query={FIGMA_FILE_QUERY} variables={{ fileId }}>
+    <Query
+      query={FIGMA_FILE_QUERY}
+      variables={{ fileId, pageName, nodeName: "" }}
+    >
       {({ loading, data, error, subscribeToMore }) => {
         if (error) {
           console.error(error)
@@ -35,8 +105,9 @@ function FigmaFile({ fileId, children }) {
         const subscribeToFileUpdates = () =>
           subscribeToMore({
             document: FIGMA_FILE_SUBSCRIPTION,
-            variables: { fileId },
+            variables: { fileId, pageName, nodeName: "" },
             updateQuery: (prev, { subscriptionData }) => {
+              console.log(subscriptionData)
               if (!subscriptionData.data) return prev
               const newFile = subscriptionData.data
               console.log("Figma file updated!")

@@ -1,33 +1,11 @@
 import React from "react"
 import styled from "styled-components"
-import gql from "graphql-tag"
 import { LastModifiedContext } from "./layout"
 import FigmaQuery from "./FigmaQuery"
-import { childrenFragment, rectFragment } from "./FigmaFrame"
+import { FIGMA_FILE_QUERY } from "./FigmaFile"
 
 const NodeWrapper = styled("div")`
   position: relative;
-`
-
-const getFigmaNode = gql`
-  query FigmaFrameNodeQuery(
-    $fileId: ID!
-    $pageName: String!
-    $nodeName: String!
-  ) {
-    file(id: $fileId) {
-      pages(name: $pageName) {
-        name
-        frames {
-          ...Rect
-          ...ChildrenOfName
-        }
-      }
-    }
-  }
-
-  ${rectFragment}
-  ${childrenFragment}
 `
 
 export default function FigmaGroup({ fileId, pageName, nodeName, children }) {
@@ -35,7 +13,7 @@ export default function FigmaGroup({ fileId, pageName, nodeName, children }) {
     <LastModifiedContext.Consumer>
       {lastModified => (
         <FigmaQuery
-          query={getFigmaNode}
+          query={FIGMA_FILE_QUERY}
           variables={{
             fileId,
             pageName,
