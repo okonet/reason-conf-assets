@@ -5,7 +5,6 @@ function FigmaQuery({ query, children, variables }) {
   return (
     <Query query={query} variables={variables}>
       {({ loading, data, error }) => {
-        console.log(loading, data, error)
         if (error) {
           console.error(error)
           return "Oh no!"
