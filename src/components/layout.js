@@ -12,13 +12,23 @@ import { split } from "apollo-link"
 import ApolloClient from "apollo-client"
 import { ApolloProvider } from "react-apollo"
 import { BatchHttpLink } from "apollo-link-batch-http"
-import { InMemoryCache } from "apollo-cache-inmemory"
+import {
+  InMemoryCache,
+  IntrospectionFragmentMatcher,
+} from "apollo-cache-inmemory"
 import { WebSocketLink } from "apollo-link-ws"
 import { getMainDefinition } from "apollo-utilities"
+import introspectionQueryResultData from "../../fragmentTypes.json"
 import Header from "./header"
 import "./layout.css"
 
 export const LastModifiedContext = React.createContext("")
+
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData,
+})
+
+const cache = new InMemoryCache({ fragmentMatcher })
 
 const httpLink = new BatchHttpLink({
   uri: "http://localhost:3001/graphql",
@@ -42,7 +52,7 @@ const link = split(
 
 const client = new ApolloClient({
   link,
-  cache: new InMemoryCache(),
+  cache,
 })
 
 const Layout = ({ children }) => {

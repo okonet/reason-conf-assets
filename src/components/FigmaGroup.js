@@ -3,6 +3,7 @@ import styled from "styled-components"
 import gql from "graphql-tag"
 import { LastModifiedContext } from "./layout"
 import FigmaQuery from "./FigmaQuery"
+import { childrenFragment } from "./FigmaFrame"
 
 const NodeWrapper = styled("div")`
   position: relative;
@@ -18,18 +19,20 @@ const getFigmaNode = gql`
       pages(name: $pageName) {
         name
         frames {
-          ...Rect
-          children(name: $nodeName) {
-            ... on Frame {
-              id
-              ...Rect
-            }
+          position {
+            x
+            y
           }
+          size {
+            width
+            height
+          }
+          ...ChildrenOfName
         }
       }
     }
   }
-  ${rectFragment}
+  ${childrenFragment}
 `
 
 export default function FigmaGroup({ fileId, pageName, nodeName, children }) {

@@ -8,6 +8,49 @@ const NodeWrapper = styled("div")`
   position: relative;
 `
 
+export const childrenFragment = gql`
+  fragment ChildrenOfName on Frame {
+    children(name: $nodeName) {
+      ... on Frame {
+        id
+        position {
+          x
+          y
+        }
+        size {
+          width
+          height
+        }
+      }
+      ... on Text {
+        name
+        visible
+        position {
+          x
+          y
+        }
+        size {
+          width
+          height
+        }
+        style {
+          fontSize
+          fontFamily
+          fontWeight
+          letterSpacing
+          lineHeightPx
+        }
+        fill {
+          r
+          g
+          b
+          a
+        }
+      }
+    }
+  }
+`
+
 const getFigmaNode = gql`
   query FigmaFrameNodeQuery(
     $fileId: ID!
@@ -27,23 +70,13 @@ const getFigmaNode = gql`
             width
             height
           }
-          children(name: $nodeName) {
-            ... on Frame {
-              id
-              position {
-                x
-                y
-              }
-              size {
-                width
-                height
-              }
-            }
-          }
+          ...ChildrenOfName
         }
       }
     }
   }
+
+  ${childrenFragment}
 `
 
 const getImagesOfNode = gql`

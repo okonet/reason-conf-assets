@@ -5,6 +5,7 @@ import gql from "graphql-tag"
 import GoogleFontLoader from "react-google-font-loader"
 import { LastModifiedContext } from "./layout"
 import FigmaQuery from "./FigmaQuery"
+import { childrenFragment } from "./FigmaFrame"
 
 const NodeWrapper = styled("div")`
   position: absolute;
@@ -25,37 +26,13 @@ const getFigmaNode = gql`
             x
             y
           }
-          children(type: TEXT, name: $nodeName) {
-            ... on Text {
-              name
-              visible
-              position {
-                x
-                y
-              }
-              size {
-                width
-                height
-              }
-              style {
-                fontSize
-                fontFamily
-                fontWeight
-                letterSpacing
-                lineHeightPx
-              }
-              fill {
-                r
-                g
-                b
-                a
-              }
-            }
-          }
+          ...ChildrenOfName
         }
       }
     }
   }
+
+  ${childrenFragment}
 `
 
 export default function FigmaTextNode({
