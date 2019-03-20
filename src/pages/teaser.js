@@ -33,7 +33,7 @@ const TeaserPage = () => (
       render={data => (
         <Stack gap={4}>
           {data.data.conference.speakers.map(speaker => (
-            <SpeakerTwitterCard contact={speaker} />
+            <SpeakerTwitterCard contact={speaker} key={speaker.name} />
           ))}
         </Stack>
       )}
