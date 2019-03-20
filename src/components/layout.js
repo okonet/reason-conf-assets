@@ -11,7 +11,7 @@ import { graphql, StaticQuery } from "gatsby"
 import { split } from "apollo-link"
 import ApolloClient from "apollo-client"
 import { ApolloProvider } from "react-apollo"
-import { BatchHttpLink } from "apollo-link-batch-http"
+import { HttpLink } from "apollo-link-http"
 import {
   InMemoryCache,
   IntrospectionFragmentMatcher,
@@ -30,7 +30,7 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
 
 const cache = new InMemoryCache({ fragmentMatcher })
 
-const httpLink = new BatchHttpLink({
+const httpLink = new HttpLink({
   uri: "http://localhost:3001/graphql",
 })
 
