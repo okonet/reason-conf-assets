@@ -7,32 +7,29 @@ import FigmaQuery from "./FigmaQuery"
 const NodeWrapper = styled("div")`
   position: relative;
 `
+export const rectFragment = gql`
+  fragment Rect on Node {
+    position {
+      x
+      y
+    }
+    size {
+      width
+      height
+    }
+  }
+`
 
 export const childrenFragment = gql`
   fragment ChildrenOfName on Frame {
     children(name: $nodeName) {
       ... on Frame {
         id
-        position {
-          x
-          y
-        }
-        size {
-          width
-          height
-        }
+        ...Rect
       }
       ... on Text {
         name
         visible
-        position {
-          x
-          y
-        }
-        size {
-          width
-          height
-        }
         style {
           fontSize
           fontFamily
@@ -46,9 +43,12 @@ export const childrenFragment = gql`
           b
           a
         }
+        ...Rect
       }
     }
   }
+
+  ${rectFragment}
 `
 
 const getFigmaNode = gql`
@@ -62,14 +62,7 @@ const getFigmaNode = gql`
         name
         frames {
           name
-          position {
-            x
-            y
-          }
-          size {
-            width
-            height
-          }
+          ...Rect
           ...ChildrenOfName
         }
       }
@@ -77,6 +70,7 @@ const getFigmaNode = gql`
   }
 
   ${childrenFragment}
+  ${rectFragment}
 `
 
 const getImagesOfNode = gql`

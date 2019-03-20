@@ -5,7 +5,7 @@ import gql from "graphql-tag"
 import GoogleFontLoader from "react-google-font-loader"
 import { LastModifiedContext } from "./layout"
 import FigmaQuery from "./FigmaQuery"
-import { childrenFragment } from "./FigmaFrame"
+import { childrenFragment, rectFragment } from "./FigmaFrame"
 
 const NodeWrapper = styled("div")`
   position: absolute;
@@ -19,19 +19,15 @@ const getFigmaNode = gql`
   ) {
     file(id: $fileId) {
       pages(name: $pageName) {
-        name
         frames {
-          name
-          position {
-            x
-            y
-          }
+          ...Rect
           ...ChildrenOfName
         }
       }
     }
   }
 
+  ${rectFragment}
   ${childrenFragment}
 `
 
