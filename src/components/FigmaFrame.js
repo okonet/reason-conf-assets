@@ -10,7 +10,7 @@ const NodeWrapper = styled("div")`
 
 const getImagesOfNode = gql`
   query FigmaImageOfNodeQuery($fileId: ID!, $nodeIds: [ID]) {
-    image(id: $fileId, params: { ids: $nodeIds, format: "svg" }) {
+    image(id: $fileId, params: { ids: $nodeIds, scale: 2, format: "png" }) {
       images
     }
   }
@@ -50,6 +50,7 @@ export default function FigmaFrame({ fileId, pageName, nodeName, children }) {
                     css={{
                       ...size,
                       background: `url(${data.image.images[0]})`,
+                      backgroundSize: "cover",
                     }}
                   >
                     {children}
