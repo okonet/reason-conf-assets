@@ -47,20 +47,27 @@ export const childrenFragment = gql`
   ${rectFragment}
 `
 
-export const FIGMA_FILE_QUERY = gql`
-  query FigmaFileQuery($fileId: ID!, $pageName: String!, $nodeName: String!) {
-    file(id: $fileId) {
-      pages(name: $pageName) {
+const pageFragment = gql`
+  fragment Page on File {
+    lastModified
+    pages(name: $pageName) {
+      name
+      frames {
         name
-        frames {
-          name
-          ...Rect
-          ...ChildrenOfName
-        }
+        ...Rect
+        ...ChildrenOfName
       }
     }
   }
+`
+export const FIGMA_FILE_QUERY = gql`
+  query FigmaFileQuery($fileId: ID!, $pageName: String!, $nodeName: String!) {
+    file(id: $fileId) {
+      ...Page
+    }
+  }
 
+  ${pageFragment}
   ${childrenFragment}
   ${rectFragment}
 `
@@ -72,17 +79,11 @@ const FIGMA_FILE_SUBSCRIPTION = gql`
     $nodeName: String!
   ) {
     file(id: $fileId) {
-      pages(name: $pageName) {
-        name
-        frames {
-          name
-          ...Rect
-          ...ChildrenOfName
-        }
-      }
+      ...Page
     }
   }
 
+  ${pageFragment}
   ${childrenFragment}
   ${rectFragment}
 `
