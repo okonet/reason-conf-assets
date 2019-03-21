@@ -34,7 +34,7 @@ module.exports = {
       options: {
         typeName: "DATA",
         fieldName: "data",
-        url: "http://localhost:3000/graphql",
+        url: "https://api.react-finland.fi/graphql",
       },
     },
   ],
