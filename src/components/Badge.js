@@ -8,33 +8,36 @@ function Badge({ contact }) {
   return (
     <FigmaFile fileId="HRK5IaLG00uj7oEV2XOg45" pageName="Badge">
       {({ data }) => (
-        <FigmaFrame
-          fileId="HRK5IaLG00uj7oEV2XOg45"
-          pageName="Badge"
-          nodeName="Export"
-        >
-          <FigmaTextNode
+        <>
+          <h3>Last modified: {data.file.lastModified}</h3>
+          <FigmaFrame
             fileId="HRK5IaLG00uj7oEV2XOg45"
             pageName="Badge"
-            nodeName="firstName"
+            nodeName="Export"
           >
-            {firstName}
-          </FigmaTextNode>
-          <FigmaTextNode
-            fileId="HRK5IaLG00uj7oEV2XOg45"
-            pageName="Badge"
-            nodeName="lastName"
-          >
-            {lastName}
-          </FigmaTextNode>
-          <FigmaTextNode
-            fileId="HRK5IaLG00uj7oEV2XOg45"
-            pageName="Badge"
-            nodeName="companyName"
-          >
-            {contact.company || "Freelance"}
-          </FigmaTextNode>
-        </FigmaFrame>
+            <FigmaTextNode
+              fileId="HRK5IaLG00uj7oEV2XOg45"
+              pageName="Badge"
+              nodeName="firstName"
+            >
+              {firstName}
+            </FigmaTextNode>
+            <FigmaTextNode
+              fileId="HRK5IaLG00uj7oEV2XOg45"
+              pageName="Badge"
+              nodeName="lastName"
+            >
+              {lastName}
+            </FigmaTextNode>
+            <FigmaTextNode
+              fileId="HRK5IaLG00uj7oEV2XOg45"
+              pageName="Badge"
+              nodeName="companyName"
+            >
+              {contact.company || "Freelance"}
+            </FigmaTextNode>
+          </FigmaFrame>
+        </>
       )}
     </FigmaFile>
   )
