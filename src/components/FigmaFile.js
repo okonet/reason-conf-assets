@@ -20,6 +20,7 @@ export const childrenFragment = gql`
     children(name: $nodeName) {
       ... on Frame {
         id
+        image(params: { format: "svg" })
         ...Rect
       }
       ... on Text {

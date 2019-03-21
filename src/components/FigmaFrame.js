@@ -24,40 +24,23 @@ export default function FigmaFrame({ fileId, pageName, nodeName, children }) {
         fileId,
         pageName,
         nodeName,
+        format: "svg",
       }}
     >
       {({ data }) => {
         const frame = data.file.pages[0].frames[0]
         const { size } = frame
-        const { id } = frame.children[0]
+        const { image } = frame.children[0]
 
         return (
           <NodeWrapper
             css={{
               ...size,
+              background: `url(${image})`,
+              backgroundSize: "cover",
             }}
           >
-            <FigmaQuery
-              query={getImagesOfNode}
-              variables={{
-                fileId,
-                nodeIds: id,
-              }}
-            >
-              {({ data }) => {
-                return (
-                  <NodeWrapper
-                    css={{
-                      ...size,
-                      background: `url(${data.image.images[0]})`,
-                      backgroundSize: "cover",
-                    }}
-                  >
-                    {children}
-                  </NodeWrapper>
-                )
-              }}
-            </FigmaQuery>
+            {children}
           </NodeWrapper>
         )
       }}
