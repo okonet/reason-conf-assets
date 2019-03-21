@@ -22,8 +22,6 @@ import introspectionQueryResultData from "../../fragmentTypes.json"
 import Header from "./header"
 import "./layout.css"
 
-export const LastModifiedContext = React.createContext("")
-
 const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData,
 })
