@@ -6,6 +6,7 @@
   "author": "Andrey Okonetchnikov <andrey@okonet.ru>",
   "dependencies": {
     "apollo-cache-inmemory": "^1.5.1",
+    "apollo-cache-persist": "^0.1.1",
     "apollo-client": "^2.5.1",
     "apollo-link": "^1.2.11",
     "apollo-link-http": "^1.5.14",

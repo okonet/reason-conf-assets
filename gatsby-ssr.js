@@ -3,5 +3,3 @@
  *
  * See: https://www.gatsbyjs.org/docs/ssr-apis/
  */
-
-export { default as wrapRootElement } from "./inject-apollo"
