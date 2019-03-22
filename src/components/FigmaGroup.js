@@ -1,19 +1,15 @@
 import React from "react"
 import styled from "styled-components"
 import FigmaQuery from "./FigmaQuery"
-import { FIGMA_FILE_QUERY } from "./FigmaFile"
 
 const NodeWrapper = styled("div")`
   position: relative;
 `
 
-export default function FigmaGroup({ fileId, pageName, nodeName, children }) {
+export default function FigmaGroup({ nodeName, children }) {
   return (
     <FigmaQuery
-      query={FIGMA_FILE_QUERY}
       variables={{
-        fileId,
-        pageName,
         nodeName,
       }}
     >

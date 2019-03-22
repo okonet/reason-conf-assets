@@ -3,24 +3,15 @@ import styled from "styled-components"
 import { rgba } from "polished"
 import GoogleFontLoader from "react-google-font-loader"
 import FigmaQuery from "./FigmaQuery"
-import { FIGMA_FILE_QUERY } from "./FigmaFile"
 
 const NodeWrapper = styled("div")`
   position: absolute;
 `
 
-export default function FigmaTextNode({
-  fileId,
-  pageName,
-  nodeName,
-  children,
-}) {
+export default function FigmaTextNode({ nodeName, children }) {
   return (
     <FigmaQuery
-      query={FIGMA_FILE_QUERY}
       variables={{
-        fileId,
-        pageName,
         nodeName,
       }}
     >

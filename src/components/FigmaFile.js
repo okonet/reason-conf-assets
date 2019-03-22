@@ -2,6 +2,11 @@ import React from "react"
 import { Query } from "react-apollo"
 import gql from "graphql-tag"
 
+export const FigmaContext = React.createContext({
+  fileId: null,
+  pageName: null,
+})
+
 export const rectFragment = gql`
   fragment Rect on Node {
     position {
@@ -119,7 +124,16 @@ function FigmaFile({ fileId, pageName, children }) {
 
         subscribeToFileUpdates()
 
-        return children({ data })
+        return (
+          <FigmaContext.Provider
+            value={{
+              fileId,
+              pageName,
+            }}
+          >
+            {children({ data })}
+          </FigmaContext.Provider>
+        )
       }}
     </Query>
   )
