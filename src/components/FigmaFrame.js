@@ -1,19 +1,10 @@
 import React from "react"
 import styled from "styled-components"
-import gql from "graphql-tag"
 import FigmaQuery from "./FigmaQuery"
 import { FIGMA_FILE_QUERY } from "./FigmaFile"
 
 const NodeWrapper = styled("div")`
   position: relative;
-`
-
-const getImagesOfNode = gql`
-  query FigmaImageOfNodeQuery($fileId: ID!, $nodeIds: [ID]) {
-    image(id: $fileId, params: { ids: $nodeIds, scale: 2, format: "png" }) {
-      images
-    }
-  }
 `
 
 export default function FigmaFrame({ fileId, pageName, nodeName, children }) {
