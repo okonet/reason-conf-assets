@@ -1,25 +1,25 @@
 import React from "react"
-import FigmaTextNode from "./FigmaTextNode"
-import FigmaFrame from "./FigmaFrame"
-import FigmaFile from "./FigmaFile"
+import { File, Frame, Text } from "react-figma-primitives"
 
 function Badge({ contact }) {
   const [firstName, lastName] = contact.name.split(" ")
   return (
-    <FigmaFile fileId="HRK5IaLG00uj7oEV2XOg45" pageName="Badge">
-      {({ data }) => (
-        <>
-          <h3>Last modified: {data.file.lastModified}</h3>
-          <FigmaFrame nodeName="Export">
-            <FigmaTextNode nodeName="firstName">{firstName}</FigmaTextNode>
-            <FigmaTextNode nodeName="lastName">{lastName}</FigmaTextNode>
-            <FigmaTextNode nodeName="companyName">
-              {contact.company || "Freelance"}
-            </FigmaTextNode>
-          </FigmaFrame>
-        </>
-      )}
-    </FigmaFile>
+    <File fileId="HRK5IaLG00uj7oEV2XOg45" pageName="Badge">
+      {({ data }) =>
+        console.log(data) || (
+          <>
+            <h3>Last modified: {data.file.lastModified}</h3>
+            <Frame nodeName="Export">
+              <Text nodeName="firstName">{firstName}</Text>
+              <Text nodeName="lastName">{lastName}</Text>
+              <Text nodeName="companyName">
+                {contact.company || "Freelance"}
+              </Text>
+            </Frame>
+          </>
+        )
+      }
+    </File>
   )
 }
 

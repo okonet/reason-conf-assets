@@ -9022,6 +9022,31 @@ react-error-overlay@^3.0.0:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-3.0.0.tgz#c2bc8f4d91f1375b3dad6d75265d51cd5eeaf655"
   integrity sha512-XzgvowFrwDo6TWcpJ/WTiarb9UI6lhA4PMzS7n1joK3sHfBBBOQHUc0U4u57D6DWO9vHv6lVSWx2Q/Ymfyv4hw==
 
+react-figma-primitives@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-figma-primitives/-/react-figma-primitives-1.0.0.tgz#c4c1decba4bfd252645670e54bc56a7cd6f04dc1"
+  integrity sha512-l299qdiqZuNTKcCCcwQhelNdUegSpehu/Iuts4Z46HY4pUu4Z/6+vPLG5q3nGSdttqcz/Zq9AQoWURP20wcF7Q==
+  dependencies:
+    apollo-cache-inmemory "^1.5.1"
+    apollo-cache-persist "^0.1.1"
+    apollo-client "^2.5.1"
+    apollo-link "^1.2.11"
+    apollo-link-http "^1.5.14"
+    apollo-link-ws "^1.0.17"
+    apollo-utilities "^1.2.1"
+    graphql "^14.1.1"
+    graphql-tag "^2.10.1"
+    lodash "^4.17.11"
+    node-fetch "^2.3.0"
+    polished "^3.0.3"
+    prop-types "^15.7.2"
+    react "^16.8.4"
+    react-apollo "^2.5.2"
+    react-dom "^16.8.4"
+    react-google-font-loader "^1.0.5"
+    styled-components "^4.1.3"
+    subscriptions-transport-ws "^0.9.16"
+
 react-google-font-loader@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/react-google-font-loader/-/react-google-font-loader-1.0.5.tgz#83b3c6c01a97acbf4da0752a2fb2c21c1c413778"

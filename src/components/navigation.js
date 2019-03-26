@@ -11,6 +11,9 @@ function Navigation() {
         <li>
           <Link to="/teaser">Speaker Teaser</Link>
         </li>
+        <li>
+          <Link to="/slides">Slides</Link>
+        </li>
       </ul>
     </nav>
   )
