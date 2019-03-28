@@ -13,19 +13,29 @@ const badgesPerPage = 4 // Should be even!
 const PageStyles = createGlobalStyle`
   @page {
     size: A4;
-    margin: 0;
+    //margin-top: 1cm;
   }
 `
 
 const Sheet = styled.section`
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: space-between;
+  margin-bottom: 5mm;
   width: 210mm;
   height: 296mm;
+  box-sizing: border-box;
   //height: 11.5in !important; // Adjust for Safari print mode
-  -webkit-print-color-adjust: exact;
+
+  @media screen {
+    box-shadow: 0 10px 16px rgba(0, 0, 0, 0.5);
+  }
+
   @media print {
+    break-before: page;
     break-after: page;
+    -webkit-print-color-adjust: exact;
   }
 `
 
@@ -61,7 +71,7 @@ export default function Badges() {
         {({ tickets }) => (
           <File fileId="HRK5IaLG00uj7oEV2XOg45" pageName="Badge">
             {() =>
-              chunk(take(tickets, 4), badgesPerPage).map((pageTickets, idx) => (
+              chunk(tickets, badgesPerPage).map((pageTickets, idx) => (
                 <SplitPage tickets={pageTickets} key={idx} />
               ))
             }
