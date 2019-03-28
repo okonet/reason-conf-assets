@@ -53,10 +53,13 @@ const getEmptyData = type => ({
 const getType = type => {
   switch (type) {
     case "Organizer": {
-      return "Organizer"
+      return "Team"
     }
     case "Volunteer": {
-      return "Volunteer"
+      return "Team"
+    }
+    case "Speaker": {
+      return "Speaker"
     }
     default:
       return "Attendee"
@@ -82,7 +85,7 @@ const convertData = data => {
       type: getType(i["Ticket"]),
       twitter: i["Tags"] ? `@${i["Tags"]}` : null,
     }))
-    .concat(Array(emptyOrgBadges).fill(getEmptyData("Volunteer")))
+    .concat(Array(emptyOrgBadges).fill(getEmptyData("Team")))
     .concat(Array(emptyBadges + emptyBadgesFill).fill(getEmptyData("Attendee")))
 }
 
